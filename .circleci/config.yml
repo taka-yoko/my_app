@@ -7,25 +7,25 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        keys:
-          - npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
-          - npm-{{ .Branch }}-
-          - npm-
+          keys:
+            - npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - npm-{{ .Branch }}-
+            - npm-
 
       - run:
-        name: Install Dependency
-        command: npm install
+          name: Install Dependency
+          command: npm install
 
       - run:
-        name: Build
-        command: npm run build
+          name: Build
+          command: npm run build
 
       - save_cache:
-        key: npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
-        paths:
-          - ~/workspace/node_modules
-          - ~/workspace/dist
-        force: yes
+          key: npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/workspace/node_modules
+            - ~/workspace/dist
+          force: yes
 
   deploy:
     working_directory: ~/workspace
@@ -34,16 +34,16 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        keys:
-          - npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
-          - npm-{{ .Branch }}-
-          - npm-
+          keys:
+            - npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - npm-{{ .Branch }}-
+            - npm-
       - run:
-        name: Install Dependency
-        command: npm install
+          name: Install Dependency
+          command: npm install
       - run:
-        name: deploy
-        command: ./node_modules/.bin/firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
+          name: deploy
+          command: ./node_modules/.bin/firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
 
 workflows:
   version: 2
